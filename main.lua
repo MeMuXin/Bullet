@@ -100,8 +100,13 @@ function OnPlayerRightClick(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, 
 		local Distance = (LastPos - VectorPos):Length()
 		if Distance > BulletSpeed then
 			LastPos = VectorPos
-			World:QueueSetBlock(X, Y, Z, E_BLOCK_DIAMOND_BLOCK, 0, T)
-			World:QueueSetBlock(X, Y, Z, E_BLOCK_AIR, 0, T + BulletSize)
+			World:ScheduleTask(T, function()
+			World:SetBlock(X, Y, Z, E_BLOCK_DIAMOND_BLOCK, 0);
+			end)
+			World:ScheduleTask(T + BulletSize, function()
+			World:SetBlock(X, Y, Z, E_BLOCK_AIR, 0);
+			end)
+
 			T = T + 1
 		end
 	end}
